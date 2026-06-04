@@ -21,7 +21,7 @@ app.UseMiddleware<ExceptionMiddleware>(); //adding Middleware
 app.UseDeveloperExceptionPage();
 app.UseCors(opt => 
 {
-    opt.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:3000");
+    opt.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("https://localhost:3000");
 });
 
 

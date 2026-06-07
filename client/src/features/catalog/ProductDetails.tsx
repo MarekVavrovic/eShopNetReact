@@ -17,7 +17,7 @@ import {
   useFetchBasketQuery,
   useRemoveBasketItemMutation,
 } from "../basket/basketApi";
-import { useEffect, useState, type ChangeEvent } from "react";
+import { useEffect, useRef, useState, type ChangeEvent } from "react";
 
 export default function ProductDetails() {
   const { id } = useParams();
@@ -30,9 +30,15 @@ export default function ProductDetails() {
   const { data: basket } = useFetchBasketQuery();
   const item = basket?.items.find((x) => x.productId === +id!);
   const [quantity, setQuantity] = useState(0);
+  const prevQuantityRef = useRef<number>(0);
 
   useEffect(() => {
-    setQuantity(item?.quantity ?? 0);
+    const newQuantity = item?.quantity ?? 0;
+
+    if (newQuantity !== prevQuantityRef.current) {
+      setQuantity(newQuantity);
+      prevQuantityRef.current = newQuantity;
+    }
   }, [item?.quantity]);
 
   if (isLoading || !product) return <div>Loading...</div>;
@@ -49,10 +55,16 @@ export default function ProductDetails() {
     }
   };
 
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const value = +event.currentTarget.value;
-
-    if (value >= 0) setQuantity(value);
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.currentTarget.value;
+    if (value === "") {
+      setQuantity(0);
+      return;
+    }
+    const num = parseInt(value, 10);
+    if (!isNaN(num) && num >= 0) {
+      setQuantity(num);
+    }
   };
 
   const productDetails = [
@@ -110,14 +122,16 @@ export default function ProductDetails() {
           <Grid2 size={6}>
             <Button
               onClick={handleUpdateBasket}
-              disabled={quantity === item?.quantity || !item && quantity === 0}
+              disabled={
+                quantity === item?.quantity || (!item && quantity === 0)
+              }
               sx={{ height: "55px" }}
               color="primary"
               size="large"
               variant="contained"
               fullWidth
             >
-             {item ? 'Update quantity' : 'Add to basket'}
+              {item ? "Update quantity" : "Add to basket"}
             </Button>
           </Grid2>
         </Grid2>

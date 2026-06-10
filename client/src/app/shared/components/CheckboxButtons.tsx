@@ -1,5 +1,4 @@
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
-import { useEffect, useState } from "react";
 
 type Props = {
   items: string[];
@@ -8,19 +7,13 @@ type Props = {
 };
 
 export default function CheckboxButtons({ items, checked, onChange }: Props) {
-  const [checkedItems, setCheckedItems] = useState(checked);
-
-  useEffect(() => {
-    setCheckedItems(checked); //tracking the checked items locally
-  }, [checked]);
 
   const handleToggle = (value: string) => {
-    const updatedChecked = checkedItems?.includes(value)
-      ? checkedItems.filter((item) => item !== value)
-      : [...checkedItems, value];
+    const updatedChecked = checked.includes(value)
+      ? checked.filter((item) => item !== value)
+      : [...checked, value];
 
-    setCheckedItems(updatedChecked);
-    onChange(updatedChecked);
+    onChange(updatedChecked); // re-render with new checked
   };
 
   return (
@@ -30,7 +23,7 @@ export default function CheckboxButtons({ items, checked, onChange }: Props) {
           key={item}
           control={
             <Checkbox
-              checked={checkedItems.includes(item)}
+              checked={checked.includes(item)}
               onClick={() => handleToggle(item)}
               color="secondary"
               sx={{ py: 0.7, fontSize: 40 }}

@@ -1,24 +1,28 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>34c1dc2b-1df2-4f9f-af19-c456e63e026b</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <Folder Include="Data\" />
     <Folder Include="DTOs\" />
     <Folder Include="Entities\" />
+    <Folder Include="Entities\OrderAggregate\" />
     <Folder Include="Extensions\" />
     <Folder Include="Middleware\" />
     <Folder Include="RequestHelpers\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.0" />
+    <PackageReference Include="Stripe.net" Version="47.1.0" />
   </ItemGroup>
 
  
